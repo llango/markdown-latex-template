@@ -1,0 +1,113 @@
+% !TeX encoding = utf8
+\documentclass[11pt,a4]{report}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{verbatim,amsmath}
+\usepackage{courier}
+\usepackage[labelfont=bf]{caption}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage[hybrid,hashEnumerators,pipeTables,tableCaptions,footnotes,contentBlocks,fencedCode,citations,underscores=false]{markdown}
+
+% How code-blocks are rendered. This gives approximately the same syntax for customizing both fenced blocks and content blocks.
+
+% TODO: figure out how to get a similar syntax for tables and perhaps for images?
+\markdownSetup{
+  renderers = {
+    contentBlockCode = {%
+      % This is the #2 (\MakeUppercase{#1}) document \texttt{#3}, #4 #5.
+      \lstinputlisting[language=#5]{#4}
+    },
+    inputFencedCode = {
+      \lstinputlisting[language=#2]{#1}
+    }
+  },
+}
+
+\usepackage{fancyhdr,fancyvrb}
+
+\usepackage{graphicx,color,boxedminipage}
+\setkeys{Gin}{width=.9\textwidth}
+
+\usepackage{ragged2e,colortbl,appendix}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{references.bib}
+\usepackage{csquotes}
+
+\usepackage{here,multirow,pdfpages}
+
+\usepackage{xcolor}
+\usepackage{lipsum,todonotes} 
+
+\floatplacement{table}{H}
+\floatplacement{figure}{H}
+\floatplacement{equation}{H}
+
+% Customize the look of code-blocks
+\usepackage{listings}
+\lstset{basicstyle=\small\ttfamily}
+\lstset{showstringspaces=false}
+\lstset{frame=L, frameround=tttt, numbers=left, numbersep=8pt, framexleftmargin=16pt, captionpos=b}
+\lstset{float=!ht}
+\makeatletter
+\let\lst@floatdefault\lst@float
+\makeatother
+
+\definecolor{darkgreen}{rgb}{0.0, 0.6, 0.0}
+\definecolor{darkred}{rgb}{0.6, 0.0, 0.0}
+\definecolor{gray}{rgb}{0.6, 0.6, 0.6}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+
+\textwidth125mm
+\textheight190mm
+\parindent0mm
+
+\setlength{\marginparwidth}{3cm}
+
+\usepackage[pdfauthor={mumblingdrunkard},pdftitle={Markdown Example},pdftex]{hyperref}
+
+\hypersetup{colorlinks,%
+citecolor=black,%
+filecolor=black,%
+linkcolor=black,%
+urlcolor=black}
+
+\title{Markdown on Overleaf}
+\author{mumblingdrunkard}
+
+\begin{document}
+\setlength{\parskip}{0.5cm}
+
+\pagestyle{fancyplain}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+\rhead{}
+\chead{}
+\cfoot{\bfseries\thepage}
+\lfoot{}
+\rfoot{}
+
+\setlength{\headheight}{14pt}
+
+\maketitle
+
+\newpage
+
+\pagenumbering{roman} 
+  
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\justifying
+
+\setlength{\parindent}{0em} 
+
+\markdownInput{Test.md}
+
+\printbibliography
+
+\end{document}
