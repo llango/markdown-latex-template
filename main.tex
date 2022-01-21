@@ -7,22 +7,30 @@
 \usepackage[labelfont=bf]{caption}
 \usepackage{enumerate}
 \usepackage{float}
-\usepackage[hybrid,hashEnumerators,pipeTables,tableCaptions,footnotes,contentBlocks,fencedCode,citations,underscores=false]{markdown}
+\usepackage[
+    hybrid,
+    pipeTables,
+    % tableCaptions,
+    footnotes,
+    contentBlocks,
+    fencedCode,
+    citations,
+    underscores=false
+]{markdown/markdown}
+
+\newcommand{\texthash}{\#}
 
 % How code-blocks are rendered. This gives approximately the same syntax for customizing both fenced blocks and content blocks.
-
-% TODO: figure out how to get a similar syntax for tables and perhaps for images?
 \markdownSetup{
   renderers = {
-    contentBlockCode = {%
-      % This is the #2 (\MakeUppercase{#1}) document \texttt{#3}, #4 #5.
-      \lstinputlisting[language=#5]{#4}
-    },
-    inputFencedCode = {
-      \lstinputlisting[language=#2]{#1}
-    }
+    contentBlockCode = { \lstinputlisting[language=#5]{#4} },
+    inputFencedCode = { 
+        \lstinputlisting[language=#2]{#1} 
+    }%
   },
 }
+% include the witiko/dot package *after* setting a custom fenced code renderer.
+\markdownSetup{theme=witiko/dot}
 
 \usepackage{fancyhdr,fancyvrb}
 
@@ -47,7 +55,7 @@
 \usepackage{listings}
 \lstset{basicstyle=\small\ttfamily}
 \lstset{showstringspaces=false}
-\lstset{frame=L, frameround=tttt, numbers=left, numbersep=8pt, framexleftmargin=16pt, captionpos=b}
+\lstset{frame=none, frameround=tttt, numbers=left, numbersep=8pt, framexleftmargin=16pt, captionpos=b}
 \lstset{float=!ht}
 \makeatletter
 \let\lst@floatdefault\lst@float
@@ -106,7 +114,7 @@ urlcolor=black}
 
 \setlength{\parindent}{0em} 
 
-\markdownInput{Test.md}
+\markdownInput{minimal.md}
 
 \printbibliography
 

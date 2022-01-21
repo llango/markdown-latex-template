@@ -4,9 +4,6 @@ The justifications for using Markdown over \LaTeX\ are many, but the most obviou
 Overleaf supports Markdown through the `markdown`-package. [@markdown-latex], [@markdown-overleaf]
 This document is a small overview of the possibilities, but is in no way exhaustive of the topic.
 
-Tanken er at Markdown lar deg skrive og ikke tenke på typesetting.
-I tillegg er det også veldig lett å lese Markdown-filer uten å måtte kompilere til en PDF-fil først.
-
 The idea is that Markdown just lets you write and not have to think about typesetting your document.
 Additionally, it is very easy to read Markdown-files without needing to compile the document first.
 This is in sharp contrast to \LaTeX\ which is a much more powerful system, but also much more complex.
@@ -40,40 +37,76 @@ becomes
 
 You also have access to most, if not all other \LaTeX\ macros and or code.
 
-## Cross-referencing
+\clearpage
+## Diagrams using the DOT language
 
-Use `\label{name}` as usual to assign a handle.
-Reference it with `\ref{name}`.
+Fenced code blocks with `dot` as the language are treated differently to normal code blocks.
 
-    See equation \ref{eq:integral}
-
-See equation \ref{eq:integral}.
-
-## Citations
-
-Cite a handle with
-
-    @handle
+    See figure \ref{fig:test}
     
-E.g:
-
-    See Calculus @AdaEss2017.
-
-becomes:
-
-See Calculus @AdaEss2017.
-
-If you don't want to include the author(s)
-
-    See Calculus [@AdaEss2017].
+    \setkeys{Gin}{width=.5\textwidth}
+    ```dot \label{fig:test}A graph
+    digraph G {
     
-See Calculus [@AdaEss2017].
-
-Referencing specific pages:
-
-    See Calculus [@AdaEss2017, p. 123 and 130].
+      subgraph cluster_0 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        a0 -> a1 -> a2 -> a3;
+        label = "process #1";
+      }
     
-See Calculus [@AdaEss2017, p. 123 and 130].
+      subgraph cluster_1 {
+        node [style=filled];
+        b0 -> b1 -> b2 -> b3;
+        label = "process #2";
+        color=blue
+      }
+      start -> a0;
+      start -> b0;
+      a1 -> b3;
+      b2 -> a3;
+      a3 -> a0;
+      a3 -> end;
+      b3 -> end;
+    
+      start [shape=Mdiamond];
+      end [shape=Msquare];
+    }
+    ```
+
+See figure \ref{fig:test}
+
+\setkeys{Gin}{width=.5\textwidth}
+```dot \label{fig:test}A graph
+digraph G {
+
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    a0 -> a1 -> a2 -> a3;
+    label = "process #1";
+  }
+
+  subgraph cluster_1 {
+    node [style=filled];
+    b0 -> b1 -> b2 -> b3;
+    label = "process #2";
+    color=blue
+  }
+  start -> a0;
+  start -> b0;
+  a1 -> b3;
+  b2 -> a3;
+  a3 -> a0;
+  a3 -> end;
+  b3 -> end;
+
+  start [shape=Mdiamond];
+  end [shape=Msquare];
+}
+```
 
 ## Code blocks
 
@@ -122,6 +155,41 @@ E.g.:
 which includes code listing \ref{code:included}.
 
 /testcode.c (C, caption={File}, label={code:included})
+
+## Cross-referencing
+
+Use `\label{name}` as usual to assign a handle.
+Reference it with `\ref{name}`.
+
+    See equation \ref{eq:integral}
+
+See equation \ref{eq:integral}.
+
+## Citations
+
+Cite a handle with
+
+    @handle
+    
+E.g:
+
+    See Calculus @AdaEss2017.
+
+becomes:
+
+See Calculus @AdaEss2017.
+
+If you don't want to include the author(s)
+
+    See Calculus [@AdaEss2017].
+    
+See Calculus [@AdaEss2017].
+
+Referencing specific pages:
+
+    See Calculus [@AdaEss2017, p. 123 and 130].
+    
+See Calculus [@AdaEss2017, p. 123 and 130].
 
 ## Verbatim
 
@@ -179,29 +247,11 @@ Tables are likely best handled in the same way as including code from other file
 
     /testtable.csv (\label{tab:ex} A test table.)
 
-gives you the table \ref{tab:ex}.
+gives you table \ref{tab:ex}.
 
 /testtable.csv (\label{tab:ex} A test table.)
 
-Alternatively, it is possible to use Markdown tables.
-
-| First name | Last name | Age | Major | Location  |
-|------------|-----------|-----|-------|-----------|
-| Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-| Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-| Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-
-: \label{tab:pipe} A table created with Markdown syntax.
-
-    Tabellen i \ref{tab:pipe} er generert med denne koden:
-    
-    | First name | Last name | Age | Major | Location  |
-    |------------|-----------|-----|-------|-----------|
-    | Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-    | Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-    | Mumbling   | Drunkard  | 20  | EE/CS | Norway    |
-    
-    : \label{tab:pipe} A table created with Markdown syntax.
+I think pipe tables should work, but I may have broken a setting.
 
 ## Quotes
 
@@ -216,9 +266,9 @@ Alternatively, it is possible to use Markdown tables.
 ## Bold, italics, and verbatim inline
 
 You can write *italic* or **bold** text by wrapping it in one or two asterisks respectively on each side.
-You can also write inline `verbatim` by wrapping it in backtics.
+You can also write inline `verbatim` by wrapping it in backticks.
 
-Usually Markdown will support underscore as an altenative to asterisk for bold and italic text.
+Usually Markdown will support underscore as an alternative to asterisk for bold and italic text.
 I have disabled this in favour of being able to use underscores in \LaTeX\ equations.
 
 \clearpage
@@ -232,7 +282,7 @@ See the footnote for more info.[^myfootnote]
     [^myfootnote]: Footnotes have a simple and usable syntax.
 
 [^myfootnote]: Footnotes have a simple and usable syntax.
-    
+
 # More
 
-For more possibilities, see *Markdown Package User Manual* @markdown-latex and *How to write in Markdown on Overleaf*. @markdown-overleaf
+For more possibilities, see *Markdown Package User Manual* [@markdown-latex] and *How to write in Markdown on Overleaf*. [@markdown-overleaf]
