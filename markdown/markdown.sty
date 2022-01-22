@@ -134,12 +134,16 @@
   \def\markdownOptionContentBlocksLanguageMap{#1}}%
 \define@key{markdownOptions}{definitionLists}[true]{%
   \def\markdownOptionDefinitionLists{#1}}%
+\define@key{markdownOptions}{eagerCache}[true]{%
+  \def\markdownOptionEagerCache{#1}}%
 \define@key{markdownOptions}{footnotes}[true]{%
   \def\markdownOptionFootnotes{#1}}%
 \define@key{markdownOptions}{fencedCode}[true]{%
   \def\markdownOptionFencedCode{#1}}%
 \define@key{markdownOptions}{jekyllData}[true]{%
   \def\markdownOptionJekyllData{#1}}%
+\define@key{markdownOptions}{hardLineBreaks}[true]{%
+  \def\markdownOptionHardLineBreaks{#1}}%
 \define@key{markdownOptions}{hashEnumerators}[true]{%
   \def\markdownOptionHashEnumerators{#1}}%
 \define@key{markdownOptions}{headerAttributes}[true]{%
@@ -184,6 +188,10 @@
 \DeclareOption{frozencache}{\markdownSetup{frozenCache}}
 \define@key{markdownOptions}{frozenCacheFileName}{%
   \def\markdownOptionFrozenCacheFileName{#1}}%
+\define@key{markdownRenderers}{documentBegin}{%
+  \renewcommand\markdownRendererDocumentBegin{#1}}%
+\define@key{markdownRenderers}{documentEnd}{%
+  \renewcommand\markdownRendererDocumentEnd{#1}}%
 \define@key{markdownRenderers}{interblockSeparator}{%
   \renewcommand\markdownRendererInterblockSeparator{#1}}%
 \define@key{markdownRenderers}{lineBreak}{%
@@ -330,6 +338,10 @@
   \renewcommand\markdownRendererHalfTickedBox{#1}}%
 \define@key{markdownRenderers}{untickedBox}{%
   \renewcommand\markdownRendererUntickedBox{#1}}%
+\define@key{markdownRendererPrototypes}{documentBegin}{%
+  \renewcommand\markdownRendererDocumentBeginPrototype{#1}}%
+\define@key{markdownRendererPrototypes}{documentEnd}{%
+  \renewcommand\markdownRendererDocumentEndPrototype{#1}}%
 \define@key{markdownRendererPrototypes}{interblockSeparator}{%
   \renewcommand\markdownRendererInterblockSeparatorPrototype{#1}}%
 \define@key{markdownRendererPrototypes}{lineBreak}{%
@@ -514,7 +526,6 @@
   \def\KV@prefix{KV@markdownOptions@}}%
 \ifmarkdownLaTeXPlain\else
 \RequirePackage{ifthen}
-
 \ifx\markdownOptionTightLists\undefined
   \@ifclassloaded{beamer}{}{%
     \RequirePackage{paralist}}%
@@ -563,8 +574,17 @@
         \ifx\empty#4\empty\else
           \caption{#4}%
         \fi
-      \end{table}}{%
-      \markdownInput{#3}}},
+      \end{table}%
+    }{%
+      \ifthenelse{\equal{#1}{tex}}{%
+        \catcode`\%=14\relax
+        \input #3\relax
+        \catcode`\%=12\relax
+      }{%
+        \markdownInput{#3}%
+      }%
+    }%
+  },
   image = {%
     \begin{figure}%
       \begin{center}%

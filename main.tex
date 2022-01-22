@@ -1,16 +1,16 @@
 % !TeX encoding = utf8
-\documentclass[11pt,a4]{report}
+\documentclass[11pt,letter]{article}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{verbatim,amsmath}
 \usepackage{courier}
 \usepackage[labelfont=bf]{caption}
 \usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{tabularx}
 \usepackage{float}
 \usepackage[
     hybrid,
-    pipeTables,
-    % tableCaptions,
     footnotes,
     contentBlocks,
     fencedCode,
@@ -24,9 +24,28 @@
 \markdownSetup{
   renderers = {
     contentBlockCode = { \lstinputlisting[language=#5]{#4} },
-    inputFencedCode = { 
-        \lstinputlisting[language=#2]{#1} 
-    }%
+    inputFencedCode = { \lstinputlisting[language=#2]{#1}  }%
+    contentBlock = {%
+        \ifthenelse{\equal{#1}{csv}}{%
+          \begin{tabularx}{}
+            \begin{center}%
+              \csvautotabular{#3}%
+            \end{center}
+            \ifx\empty#4\empty\else
+              \caption{#4}%
+            \fi
+          \end{tabularx}%
+        }{%
+          \ifthenelse{\equal{#1}{tex}}{%
+            \catcode`\%=14\relax
+            \input #3\relax
+            \catcode`\%=12\relax
+          }{%
+            \markdownInput{#3}%
+          }%
+      }%
+    },
+    inputVerbatim = {{\footnotesize\VerbatimInput{#1}}},
   },
 }
 % include the witiko/dot package *after* setting a custom fenced code renderer.
@@ -44,22 +63,18 @@
 
 \usepackage{here,multirow,pdfpages}
 
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{lipsum,todonotes} 
 
-\floatplacement{table}{H}
-\floatplacement{figure}{H}
-\floatplacement{equation}{H}
+% \floatplacement{table}{H}
+% \floatplacement{figure}{H}
+% \floatplacement{equation}{H}
 
 % Customize the look of code-blocks
 \usepackage{listings}
-\lstset{basicstyle=\small\ttfamily}
+\lstset{basicstyle=\footnotesize\ttfamily}
 \lstset{showstringspaces=false}
 \lstset{frame=none, frameround=tttt, numbers=left, numbersep=8pt, framexleftmargin=16pt, captionpos=b}
-\lstset{float=!ht}
-\makeatletter
-\let\lst@floatdefault\lst@float
-\makeatother
 
 \definecolor{darkgreen}{rgb}{0.0, 0.6, 0.0}
 \definecolor{darkred}{rgb}{0.6, 0.0, 0.0}
@@ -68,11 +83,11 @@
 \definecolor{mylilas}{RGB}{170,55,241}
 
 
-\textwidth125mm
-\textheight190mm
-\parindent0mm
+%\textwidth170mm
+%\textheight250mm
+%\parindent0mm
 
-\setlength{\marginparwidth}{3cm}
+%\setlength{\marginparwidth}{3cm}
 
 \usepackage[pdfauthor={mumblingdrunkard},pdftitle={Markdown Example},pdftex]{hyperref}
 
@@ -84,13 +99,21 @@ urlcolor=black}
 
 \title{Markdown on Overleaf}
 \author{mumblingdrunkard}
+ 
+\setlength{\arrayrulewidth}{0.2mm}
+\setlength{\tabcolsep}{12pt}
+\renewcommand{\arraystretch}{1.2}
 
 \begin{document}
-\setlength{\parskip}{0.5cm}
+%\rowcolors{3}{gray!15}{white!100}
+%\setlength{\parskip}{0.1cm}
+
+\pagestyle{empty}
+\maketitle
 
 \pagestyle{fancyplain}
-\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{\thesection\ #1}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 \rhead{}
 \chead{}
@@ -100,19 +123,25 @@ urlcolor=black}
 
 \setlength{\headheight}{14pt}
 
-\maketitle
-
-\newpage
 
 \pagenumbering{roman} 
+
+\renewcommand{\listfigurename}{Figures}
+\renewcommand{\listtablename}{Tables}
   
 \tableofcontents
-\newpage
+\listoftables
+\addcontentsline{toc}{section}{Tables}
+\listoffigures
+\addcontentsline{toc}{section}{Figures}
+\lstlistoflistings
+\addcontentsline{toc}{section}{Listings}
+
 \pagenumbering{arabic}
 
 \justifying
 
-\setlength{\parindent}{0em} 
+% \setlength{\parindent}{0em} 
 
 \markdownInput{minimal.md}
 

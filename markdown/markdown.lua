@@ -2419,10 +2419,10 @@ function M.writer.new(options)
         end
         table.insert(buffer, column)
         if i > 1 then
-          table.insert(buffer, "}")
+          table.insert(buffer, "}%")
         end
       end
-      table.insert(buffer, "}")
+      table.insert(buffer, "}%")
     end
     return buffer
   end
@@ -4329,3 +4329,4 @@ function M.new(options)
 end
 
 return M
+  
