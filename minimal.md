@@ -161,7 +161,11 @@ In the below example, a caption and a label are given.
 It is important that this line be formatted correctly.
 The first item in the list *must* be the language and you are not allowed to split the line.
 
-    ```c++, caption={c++}, label={code:direct}, float=!ht
+Also note that you can not use Markdown within the `caption={...}`.
+You have to use \LaTeX\ here to format text as shown below.
+This also holds for things like citations where you'll have to use `\cite{key}` instead of `@key`.
+
+    ```c++, caption={Some \texttt{C++} code}, label={code:direct}, float=!ht
     #include <iostream>
         
     int main(int argc, char argv[]) {
@@ -172,7 +176,7 @@ The first item in the list *must* be the language and you are not allowed to spl
     
 This example produces the code seen in listing \ref{code:direct}.
 
-```c++, caption={c++}, label={code:direct}, float=!ht
+```c++, caption={Some \texttt{C++} code}, label={code:direct}, float=!ht
 #include <iostream>
 
 int main(int argc, char argv[]) {
